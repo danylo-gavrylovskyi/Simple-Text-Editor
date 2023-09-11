@@ -1,2 +1,3 @@
 ﻿  Source.c
+E:\Meine\KSE\Programming Paradigms\Task1\Task1\Source.c(35,8): warning C4101: buffer: неиспользованная локальная переменная
   Task1.vcxproj -> E:\Meine\KSE\Programming Paradigms\Task1\x64\Debug\Task1.exe
