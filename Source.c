@@ -81,7 +81,8 @@ int main() {
             break;
         }
         case 5:
-            
+            printf("%s\n", buffer);
+            break;
         case 6: {
             
         }
