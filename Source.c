@@ -67,10 +67,18 @@ int main() {
             break;
         }
         case 3: {
-            
+            char fileName[256];
+            printf("Enter the file name for loading: ");
+            scanf("%255s", fileName);
+            loadTextFromFile(fileName, &buffer);
+            break;
         }
         case 4: {
-            
+            char fileName[256];
+            printf("Enter the file name for saving: ");
+            scanf("%255s", fileName);
+            saveTextToFile(fileName, buffer);
+            break;
         }
         case 5:
             
