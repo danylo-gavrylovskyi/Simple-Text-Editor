@@ -1,75 +1,92 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 void saveTextToFile(char* fileName, char* text) {
-	FILE* file;
-	file = fopen(fileName, "w");
-	if (file != NULL) {
-		fputs(text, file);
-		fclose(file);
-	}
+    FILE* file;
+    if (fopen_s(&file, fileName, "a") == 0) {
+        fputs(text, file);
+        fclose(file);
+        printf("%s", "\nText has been saved successfully");
+    }
+    else {
+        printf("Error while opening file");
+    }
 }
 
-void printTextFromFile(char* fileName) {
-	FILE* file;
-	char fileText[100];
-	file = fopen(fileName, "w");
-	if (file == NULL) {
-		printf("Error while opening file");
-	}
-	else {
-		if (fgets(fileText, 100, file) != NULL)
-		{
-			printf("%s", fileText);
-		}
-		fclose(file);
-	}
+void loadTextFromFile(char* fileName, char** buffer) {
+    FILE* file;
+    char fileText[100];
+    if (fopen_s(&file, fileName, "r") == 0) {
+        while (fgets(fileText, sizeof(fileText), file) != NULL) {
+            *buffer = realloc(*buffer, strlen(*buffer) + strlen(fileText) + 1);
+            strcat(*buffer, fileText);
+        }
+        fclose(file);
+        printf("%s", "\nText has been loaded successfully");
+    }
+    else {
+        printf("Error while opening file");
+    }
 }
 
-void* appendTextToBuffer(char* buffer, char input[256], size_t* bufferCapacity, size_t* bufferLength) {
-	buffer = realloc(buffer, *bufferCapacity + );
+void appendTextToBuffer(char** buffer, char* input) {
+    *buffer = realloc(*buffer, strlen(*buffer) + strlen(input) + 1);
+    if (*buffer != NULL) {
+        strcat(*buffer, input);
+    } else {
+        printf("Memory allocation failed.\n");
+    }
 }
 
 int main() {
-	int choice;
+    int choice;
 
-	size_t bufferLength = 0;
-	size_t bufferCapacity = 0;
-	char* buffer;
-	
-	while (1) {
+    char* buffer = (char*) malloc(sizeof(char));
+    *buffer = '\0';
 
-		printf("Choose the command:\n\t0.Exit\n\t1.Append text symbols to the end\n\t2.Start the new line\n\t3.Use files to loading the information\n\t4.Use files to saving the information\n\t5.Print the current text to console\n\t6.Insert the text by line and symbol index\n\t7.Search\n>> ");
-		scanf("%d", &choice);
+    while (1) {
+        printf("\nChoose the command:\n\t0.Exit\n\t1.Append text symbols to the end\n\t2.Start the new line\n\t3.Load text from file\n\t4.Save current text to file\n\t5.Print the current text to console\n\t6.Insert the text by line and symbol index\n\t7.Search\n>> ");
+        scanf("%d", &choice);
+        getchar();
 
-		if (choice == 0) break;
+        if (choice == 0) break;
 
-		switch (choice)
-		{
-		case 1: {
-			char input[256];
-			printf("Enter text to append: ");
-			scanf(" %255[^\n]", input);
-			appendTextToBuffer(buffer, input, bufferCapacity, bufferLength);
-			break;
-		}
-		case 2:
-			break;
-		case 3:
-			break;
-		case 4:
-			break;
-		case 5:
-			break;
-		case 6:
-			break;
-		default:
-			printf("The command is not implemented");
-			break;
-		}
-	}
+        switch (choice) {
+        case 1: {
+            char input[256];
+            printf("Enter text to append: ");
+            scanf("%255[^\n]", input);
+            appendTextToBuffer(&buffer, input);
+            break;
+        }
+        case 2: {
+            char newline[] = "\n";
+            appendTextToBuffer(&buffer, newline);
+            printf("%s", "New line is started");
+            break;
+        }
+        case 3: {
+            
+        }
+        case 4: {
+            
+        }
+        case 5:
+            
+        case 6: {
+            
+        }
+        case 7: {
+           
+        }
+        default:
+            printf("The command is not implemented\n");
+            break;
+        }
+    }
 
-	free(buffer);
-	
-	return 0;
+    free(buffer);
+
+    return 0;
 }
