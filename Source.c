@@ -47,13 +47,59 @@ void searchText(char** buffer, char* searchText) {
         char* position = strstr(token, searchText);
         while (position != NULL) {
             int index = position - token;
-            printf("Your text is present in this position: %d %d (Line: %d)\n", lineNumber, index, lineNumber + 1);
+            printf("Your text is present in this position: %d %d\n", lineNumber, index, lineNumber + 1);
             position = strstr(position + 1, searchText);
         }
 
         token = strtok(NULL, "\n");
         lineNumber++;
     }
+}
+
+void insertByLineAndIndex(char** buffer, int line, int index, char* input) {
+    char* result = (char*)malloc(strlen(*buffer) + strlen(input) + 1);
+
+    result[0] = '\0';
+
+    char* token = strtok(*buffer, "\n");
+    int currentLine = 0;
+
+    while (token != NULL) {
+        if (currentLine == line) {
+
+            if (strlen(token) < index) {
+                result = realloc(result, strlen(result) + (index - strlen(token)));
+
+                char* newLine = (char*)malloc(index + strlen(input) + 1);
+                strcpy(newLine, token);
+
+                while (strlen(newLine) < index) {
+                    strcat(newLine, " ");
+                }
+                
+                strcat(newLine, input);
+                strcat(result, newLine);
+
+                free(newLine);
+            }
+            else {
+                strncat(result, token, index);
+                strcat(result, input);
+                strcat(result, token + index);
+            }
+        }
+        else {
+            strcat(result, token);
+        }
+
+        strcat(result, "\n");
+        token = strtok(NULL, "\n");
+        currentLine++;
+    }
+
+    printf("%s\n", result);
+
+    *buffer = result;
 }
 
 
@@ -68,10 +114,13 @@ int main() {
         scanf("%d", &choice);
         getchar();
 
-        if (choice == 0) break;
+        if (choice == 0) {
+            break;
+        }
 
         switch (choice) {
         case 1: {
+            system("cls");
             char input[256];
             printf("Enter text to append: ");
             scanf("%255[^\n]", input);
@@ -79,12 +128,14 @@ int main() {
             break;
         }
         case 2: {
+            system("cls");
             char newline[] = "\n";
             appendTextToBuffer(&buffer, newline);
             printf("%s", "New line is started");
             break;
         }
         case 3: {
+            system("cls");
             char fileName[256];
             printf("Enter the file name for loading: ");
             scanf("%255s", fileName);
@@ -92,6 +143,7 @@ int main() {
             break;
         }
         case 4: {
+            system("cls");
             char fileName[256];
             printf("Enter the file name for saving: ");
             scanf("%255s", fileName);
@@ -99,12 +151,26 @@ int main() {
             break;
         }
         case 5:
+            system("cls");
             printf("%s\n", buffer);
             break;
         case 6: {
-            
+            system("cls");
+            int line;
+            int index;
+            char input[256];
+            printf("Enter line: ");
+            scanf("%d", &line);
+            printf("Enter index: ");
+            scanf("%d", &index);
+            printf("Enter text to append: ");
+            getchar();
+            scanf("%255[^\n]", input);
+            insertByLineAndIndex(&buffer, line, index, input);
+            break;
         }
         case 7: {
+            system("cls");
             char input[256];
             printf("Enter text to search: ");
             scanf("%255[^\n]", input);
@@ -112,6 +178,7 @@ int main() {
             break;
         }
         default:
+            system("cls");
             printf("The command is not implemented\n");
             break;
         }
