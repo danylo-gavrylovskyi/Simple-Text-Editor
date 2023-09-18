@@ -39,6 +39,24 @@ void appendTextToBuffer(char** buffer, char* input) {
     }
 }
 
+void searchText(char** buffer, char* searchText) {
+    char* token = strtok(*buffer, "\n");
+    int lineNumber = 0;
+
+    while (token != NULL) {
+        char* position = strstr(token, searchText);
+        while (position != NULL) {
+            int index = position - token;
+            printf("Your text is present in this position: %d %d (Line: %d)\n", lineNumber, index, lineNumber + 1);
+            position = strstr(position + 1, searchText);
+        }
+
+        token = strtok(NULL, "\n");
+        lineNumber++;
+    }
+}
+
+
 int main() {
     int choice;
 
@@ -87,7 +105,11 @@ int main() {
             
         }
         case 7: {
-           
+            char input[256];
+            printf("Enter text to search: ");
+            scanf("%255[^\n]", input);
+            searchText(&buffer, input);
+            break;
         }
         default:
             printf("The command is not implemented\n");
