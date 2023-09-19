@@ -47,7 +47,7 @@ void searchText(char** buffer, char* searchText) {
         char* position = strstr(token, searchText);
         while (position != NULL) {
             int index = position - token;
-            printf("Your text is present in this position: %d %d\n", lineNumber, index, lineNumber + 1);
+            printf("Your text is present in this position: %d %d\n", lineNumber, index);
             position = strstr(position + 1, searchText);
         }
 
